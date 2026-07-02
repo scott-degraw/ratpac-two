@@ -332,6 +332,8 @@ bool OutNtupleProc::OpenFile(std::string filename) {
     outputTree->Branch("trackMomZ", &trackMomZ);
     outputTree->Branch("trackKE", &trackKE);
     outputTree->Branch("trackTime", &trackTime);
+    outputTree->Branch("trackDep", &trackDep);
+    outputTree->Branch("trackQDep", &trackQDep);
     outputTree->Branch("trackProcess", &trackProcess);
     metaTree->Branch("processCodeMap", &processCodeMap);
     outputTree->Branch("trackVolume", &trackVolume);
@@ -443,12 +445,14 @@ Processor::Result OutNtupleProc::DSEvent(DS::Root *ds) {
     trackMomZ.clear();
     trackKE.clear();
     trackTime.clear();
+    trackDep.clear();
+    trackQDep.clear();
     trackProcess.clear();
     trackVolume.clear();
 
     std::vector<double> xtrack, ytrack, ztrack;
     std::vector<double> pxtrack, pytrack, pztrack;
-    std::vector<double> kinetic, globaltime;
+    std::vector<double> kinetic, globaltime, deposited, quenchedDeposited;
     std::vector<int> processMapID;
     std::vector<int> volumeMapID;
     for (int trk = 0; trk < nTracks; trk++) {
@@ -462,6 +466,8 @@ Processor::Result OutNtupleProc::DSEvent(DS::Root *ds) {
       pztrack.clear();
       kinetic.clear();
       globaltime.clear();
+      deposited.clear();
+      quenchedDeposited.clear();
       processMapID.clear();
       volumeMapID.clear();
       int nSteps = track->GetMCTrackStepCount();
@@ -487,6 +493,8 @@ Processor::Result OutNtupleProc::DSEvent(DS::Root *ds) {
         TVector3 momentum = step->GetMomentum();
         kinetic.push_back(step->GetKE());
         globaltime.push_back(step->GetGlobalTime());
+        deposited.push_back(step->GetDepositedEnergy());
+        quenchedDeposited.push_back(step->GetQuenchedDepositedEnergy());
         xtrack.push_back(tv.X());
         ytrack.push_back(tv.Y());
         ztrack.push_back(tv.Z());
@@ -496,6 +504,8 @@ Processor::Result OutNtupleProc::DSEvent(DS::Root *ds) {
       }
       trackKE.push_back(kinetic);
       trackTime.push_back(globaltime);
+      trackDep.push_back(deposited);
+      trackQDep.push_back(quenchedDeposited);
       trackPosX.push_back(xtrack);
       trackPosY.push_back(ytrack);
       trackPosZ.push_back(ztrack);
