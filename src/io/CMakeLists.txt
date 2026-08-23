@@ -12,9 +12,7 @@ add_library(io OBJECT
         src/OutNtupleProc.cc
         src/OutROOTProc.cc
         src/TrackCursor.cc
-        src/TrackNav.cc
-        src/TrackSimplifier.cc
-        src/TrackSimplifyProc.cc)
+        src/TrackNav.cc)
 
 target_link_libraries(io PUBLIC ratpac_common stlplus)
 

@@ -22,8 +22,9 @@ add_library(core OBJECT
         src/Processor.cc
         src/SignalHandler.cc
         src/TrackInfo.cc
-        src/GLG4HitPMTCollection.cc
-)
+        src/TrackCompactor.cc
+        src/Log.cc
+        src/GLG4HitPMTCollection.cc)
 
 # ratpac_common carries Ratpac::Geant4, which propagates Geant4_DEFINITIONS
 # (e.g. G4VIS_USE_OPENGLQT) via target_compile_definitions -- so the
