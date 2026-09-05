@@ -2,8 +2,7 @@
 # CMakeLists for root tool
 
 add_executable(root root.cc)
-target_include_directories(root PUBLIC ${RATPAC_INCLUDE_DIR})
-target_link_libraries(root PUBLIC ${ROOT_LIBRARIES} Threads::Threads)
+target_link_libraries(root PUBLIC ratpac_common Ratpac::ROOT Threads::Threads)
 # Add dependency because we're not linking, but the root.cc adds it dynamically
 add_dependencies(root RATPAC)
 
@@ -15,6 +14,8 @@ if(EXISTS "${CMAKE_INSTALL_PREFIX}/bin/root" AND RATPAC_ROOT)
 endif()
 
 install(TARGETS root
-        RUNTIME DESTINATION bin)
+        RUNTIME DESTINATION bin
+)
 install(FILES rootinit.C
-       DESTINATION src)
+       DESTINATION src
+)
