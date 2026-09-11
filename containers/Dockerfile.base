@@ -3,6 +3,8 @@ LABEL maintainer="Morgan Askins <maskins@berkeley.edu>"
 
 SHELL ["/bin/bash", "-c"]
 
+ARG MAKE_JOBS=""
+
 RUN apt-get -q update \
  && DEBIAN_FRONTEND=noninteractive apt-get -qy install --no-install-recommends \
     git curl build-essential vim libx11-dev libxpm-dev qt6-base-dev libqt6opengl6-dev ssh cmake \
@@ -22,8 +24,8 @@ WORKDIR /ratpac-setup
 
 RUN chown -R ratuser:ratuser /ratpac-setup
 USER ratuser
-RUN ./setup.sh --only root -j6
-RUN ./setup.sh --only geant4 -j6
+RUN ./setup.sh --only root -j${MAKE_JOBS:-$(nproc)}
+RUN ./setup.sh --only geant4 -j${MAKE_JOBS:-$(nproc)}
 RUN ./setup.sh --only cry
 ENV PATH=/ratpac-setup/local/bin:$PATH
 RUN sed -i '1s/^/#!\/bin\/bash\n/' /ratpac-setup/env.sh
