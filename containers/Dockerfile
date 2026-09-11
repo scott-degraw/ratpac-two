@@ -5,9 +5,11 @@ SHELL ["/bin/bash", "-c"]
 
 USER ratuser
 
+ARG MAKE_JOBS=""
+
 COPY --chown=ratuser:ratuser . /ratpac-setup/ratpac
 WORKDIR /ratpac-setup/ratpac
-RUN source /ratpac-setup/env.sh && make -j$(nproc)
+RUN source /ratpac-setup/env.sh && make -j${MAKE_JOBS:-$(nproc)}
 WORKDIR /ratpac-setup
 
 RUN sed -i '1s/^/#!\/bin\/bash\n/' /ratpac-setup/env.sh
